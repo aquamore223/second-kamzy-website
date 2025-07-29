@@ -21,6 +21,15 @@ header {
   padding: 1rem;
   background: #222;
   gap:10rem;
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+header.stuck {
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
 }
 
 .logo img {
@@ -217,14 +226,15 @@ header {
     height: 80px;
   }
   .search-input {
-  display: none;
-  margin-left: 1rem;
-  padding: 0.5rem;
-  border-radius: 4px;
-  border: none;
+ display: none;
+  width: 100%;
+  padding: 0.75rem 1rem;
   font-size: 1rem;
-  background: white;
-  color: black;
+  border: none;
+  outline: none;
+  background-color: #fff;
+  color: #000;
+  border-top: 1px solid #333;
 }
 
 .search-input.active {
@@ -469,6 +479,7 @@ footer {
   background: rgba(34, 34, 34, 0.9);
   color: #c4cfd3;
   font-size: 0.9rem;
+  width: 100%;
 }
 
 

@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.classList.remove("no-scroll");
   });
 
-  // Close menu when any nav link is clicked
+  // Close menu when a nav link is clicked
   navLinks.forEach(link => {
     link.addEventListener("click", () => {
       menu.classList.remove("active");
@@ -30,15 +30,40 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Toggle search input
-  searchIcon.addEventListener("click", () => {
+  searchIcon.addEventListener("click", (e) => {
+    e.stopPropagation(); // Prevent click from bubbling
     searchInput.classList.toggle("active");
     if (searchInput.classList.contains("active")) {
+      searchInput.focus();
+    } else {
+      searchInput.value = "";
+    }
+  });
+
+  // Close search input when clicking outside
+  document.addEventListener("click", (e) => {
+    if (
+      !searchInput.contains(e.target) &&
+      !searchIcon.contains(e.target) &&
+      searchInput.classList.contains("active")
+    ) {
+      searchInput.classList.remove("active");
+      searchInput.value = "";
+    }
+  });
+
+  // Focus search input with "/" key
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "/" && document.activeElement.tagName !== "INPUT") {
+      e.preventDefault();
+      searchInput.classList.add("active");
       searchInput.focus();
     }
   });
 });
 
-window.addEventListener('scroll', function () {
+// Sticky header on scroll
+window.addEventListener('scroll', () => {
   const header = document.querySelector('header');
   if (window.scrollY > 10) {
     header.classList.add('stuck');

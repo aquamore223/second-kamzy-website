@@ -279,6 +279,14 @@ header.stuck {
   }
 }
 
+
+.nav-links a.active {
+  color: #ffcc00;
+  font-weight: bold;
+  border-bottom: 2px solid #000000;
+}
+
+
 section {
   width: 100%;
   width: 100%;
@@ -519,3 +527,64 @@ footer {
   justify-content: space-between;
 }
 
+
+
+.topspg {
+  position: relative;
+  background: url('img/topbg.PNG') no-repeat center center/cover;
+  min-height: 60vh;
+  color:white;
+  font-weight: bold;
+}
+
+.topspg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+}
+.topspg h1 {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  font-size: 3rem;
+  margin-top: 20vh;
+  color: #eae9ee;
+  margin-top: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  transition: color 0.3s ease;
+}
+.topspg h1 span {
+  color: #00ffff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  font-weight: bold;
+  font-size: 3.5rem;
+  display: inline-block;
+}
+.topspg h1 span:hover {
+  color: #00bfff;
+}
+
+.topspg p {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  font-size: 1.5rem;
+  margin-top: 1rem;
+}
+.topspg .btn {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  padding: 0.5rem 1.5rem;
+  background: #00ffff;
+  color: #000;
+  text-decoration: none;
+  border-radius: 4px;
+  margin-top: 2rem;
+}
+.topspg .btn:hover {
+  background: #00bfff;
+  color: #fff;
+}

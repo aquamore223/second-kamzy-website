@@ -279,6 +279,12 @@ header.stuck {
   }
 }
 
+@media screen and (max-width: 768px) {
+  .product-item img {
+    height: 180px;
+  }
+}
+
 
 .nav-links a.active {
   color: #ffcc00;
@@ -384,7 +390,7 @@ section h2:hover {
 }
 .product-item img {
   width: 100%;
-  height: auto;
+  height: 250px;
   border-radius: 8px;
   transition: transform 0.3s ease;
   object-fit: cover;

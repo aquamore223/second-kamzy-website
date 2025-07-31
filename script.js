@@ -103,3 +103,45 @@ function setupNavAndSearch() {
   }
 }
 
+
+document.addEventListener("DOMContentLoaded", () => {
+  const sections = [
+    { file: 'tops.html', sourceId: 'tops-section', targetId: 'tops-preview' },
+    { file: 'jeans.html', sourceId: 'jeans-section', targetId: 'jeans-preview' },
+    { file: 'joggers.html', sourceId: 'joggers-section', targetId: 'joggers-preview' },
+    { file: 'underwear.html', sourceId: 'underwear-section', targetId: 'underwear-preview' },
+    { file: 'accessories.html', sourceId: 'accessories-section', targetId: 'accessories-preview' },
+    { file: 'slides.html', sourceId: 'slides-section', targetId: 'slides-preview' },
+    { file: 'shoes.html', sourceId: 'shoes-section', targetId: 'shoes-preview' },
+  ];
+
+  sections.forEach(({ file, sourceId, targetId }) => {
+    fetch(file)
+      .then(res => res.text())
+      .then(html => {
+        const temp = document.createElement('div');
+        temp.innerHTML = html;
+        const section = temp.querySelector(`#${sourceId}`);
+
+        if (section) {
+          // Clone only the section so we don't affect the original
+          const limitedSection = section.cloneNode(true);
+          const limitedGrid = limitedSection.querySelector('.product-grid');
+
+          // Remove extra items from the cloned grid
+          const productItems = limitedGrid.querySelectorAll('.product-item');
+          productItems.forEach((item, index) => {
+            if (index >= 4) {
+              item.remove();
+            }
+          });
+
+          // Append cleaned clone to the target
+          document.getElementById(targetId).appendChild(limitedSection);
+        }
+      })
+      .catch(err => console.error(`Error loading ${file}:`, err));
+  });
+});
+
+

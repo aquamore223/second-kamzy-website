@@ -105,6 +105,8 @@ function setupNavAndSearch() {
 
 
 document.addEventListener("DOMContentLoaded", () => {
+  const basePath = location.hostname === "aquamore223.github.io" ? "/second-kamzy-website/" : "";
+
   const sections = [
     { file: 'tops.html', sourceId: 'tops-section', targetId: 'tops-preview' },
     { file: 'jeans.html', sourceId: 'jeans-section', targetId: 'jeans-preview' },
@@ -116,7 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
   ];
 
   sections.forEach(({ file, sourceId, targetId }) => {
-    fetch(file)
+    fetch(basePath + file)
       .then(res => res.text())
       .then(html => {
         const temp = document.createElement('div');
@@ -124,24 +126,17 @@ document.addEventListener("DOMContentLoaded", () => {
         const section = temp.querySelector(`#${sourceId}`);
 
         if (section) {
-          // Clone only the section so we don't affect the original
           const limitedSection = section.cloneNode(true);
           const limitedGrid = limitedSection.querySelector('.product-grid');
 
-          // Remove extra items from the cloned grid
           const productItems = limitedGrid.querySelectorAll('.product-item');
           productItems.forEach((item, index) => {
-            if (index >= 4) {
-              item.remove();
-            }
+            if (index >= 4) item.remove();
           });
 
-          // Append cleaned clone to the target
           document.getElementById(targetId).appendChild(limitedSection);
         }
       })
       .catch(err => console.error(`Error loading ${file}:`, err));
   });
 });
-
-

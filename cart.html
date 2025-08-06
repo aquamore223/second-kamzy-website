@@ -12,62 +12,14 @@
   <main>
     <h1>Your Shopping Cart</h1>
     <div class="cart-container" id="cart-items"></div>
-    <h2 id="cart-total">Total: $0.00</h2>
-    <button id="clear-cart">Clear Cart</button>
+    <p>Total: <span id="total-price">₦0.00</span></p>
+    <span class="cart-count">0</span>
+    <button id="clear-cart"">Clear Cart</button>
   </main>
 
   <footer></footer>
 
   <script src="script.js" defer></script>
-  <script>
-    function renderCart() {
-      const cart = JSON.parse(localStorage.getItem("cart")) || [];
-      const cartContainer = document.getElementById("cart-items");
-      const totalDisplay = document.getElementById("cart-total");
-
-      cartContainer.innerHTML = "";
-      let total = 0;
-
-      if (cart.length === 0) {
-        cartContainer.innerHTML = "<p>Your cart is empty.</p>";
-        totalDisplay.textContent = "Total: $0.00";
-        return;
-      }
-
-      cart.forEach((item, index) => {
-        const card = document.createElement("div");
-        card.className = "product-item";
-        card.innerHTML = `
-          <img src="${item.imageUrl}" alt="${item.name}" />
-          <h3>${item.name}</h3>
-          <p>$${item.price.toFixed(2)}</p>
-          <button class="remove-item" data-index="${index}">Remove</button>
-        `;
-        cartContainer.appendChild(card);
-        total += item.price;
-      });
-
-      totalDisplay.textContent = `Total: $${total.toFixed(2)}`;
-    }
-
-    document.addEventListener("click", (e) => {
-      if (e.target.classList.contains("remove-item")) {
-        const index = parseInt(e.target.dataset.index);
-        const cart = JSON.parse(localStorage.getItem("cart")) || [];
-        cart.splice(index, 1);
-        localStorage.setItem("cart", JSON.stringify(cart));
-        renderCart();
-        updateCartCount();
-      }
-
-      if (e.target.id === "clear-cart") {
-        localStorage.removeItem("cart");
-        renderCart();
-        updateCartCount();
-      }
-    });
-
-    document.addEventListener("DOMContentLoaded", renderCart);
-  </script>
+  <script src="cart.js" defer></script>
 </body>
 </html>

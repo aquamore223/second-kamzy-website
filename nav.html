@@ -1,45 +1,43 @@
 <div class="logo">
+  <a href="index.html"><img src="img/logo.jpg" alt="kamzy wardrobe logo"></a>
+</div>
 
-      <a href="index.html"><img src="img/logo.jpg" alt="kamzy wardrobe logo"></a>
+<nav class="nav" id="nav">
+  <div class="nav-links-container" id="menu">
+    <div class="nav-top">
+      <div class="logo">
+        <a href="index.html"><img src="img/logo.jpg" alt="kamzy wardrobe logo"></a>
+      </div>
+      <i class='bx bx-x' id="close-btn"></i>
     </div>
 
-    <nav class="nav" id="nav">
-      <div class="nav-links-container" id="menu">
-        <div class="nav-top">
-          <div class="logo">
-            <a href="index.html"><img src="img/logo.jpg" alt="kamzy wardrobe logo"></a>
-          </div>
-          <i class='bx bx-x' id="close-btn"></i>
-        </div>
-        
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="tops.html">Tops</a></li>
+      <li><a href="jeans.html">Jeans</a></li>
+      <li><a href="joggers.html">Joggers</a></li>
+      <li><a href="underwear.html">Underwear</a></li>
+      <li><a href="accessories.html">Accessories</a></li>
+      <li><a href="slides.html">Slides</a></li>
+      <li><a href="shoes.html">Shoes</a></li>
+      <li><a href="index.html#contact" class="nav-contact">Contact</a></li>
+    </ul>
+  </div>
 
-        <ul class="nav-links">
-          <li><a href="index.html">Home</a></li>
-          <li><a href="tops.html">tops</a></li>
-          <li><a href="jeans.html">jeans</a></li>
-          <li><a href="joggers.html">joggers</a></li>
-          <li><a href="underwear.html">underwear</a></li>
-          <li><a href="accessories.html">accessories</a></li>
-          <li><a href="slides.html">slides</a></li>
-          <li><a href="shoes.html">shoes</a></li>
-          <li><a href="index.html#contact" class="nav-contact">Contact</a></li>
-        </ul>
+  <!-- Menu toggle icon (hamburger) -->
+  <div class="mob-icons" id="menu-icons">
+    <i class='bx bx-menu' id="menu-toggle"></i>
+  </div>
 
-        <!-- Inside your nav-links or right before closing </nav> -->
+  <!-- Search bar -->
+  <div class="mob-icons">
+    <i id="search-icon" class="bx bx-search"></i>
+    <input type="text" id="search-input" class="search-input" placeholder="Search..." />
+  </div>
 
-      </div>
+  <!-- ✅ Cart Icon (this is important) -->
+  <a href="cart.html" class="cart-icon">
+  🛒 <span id="cart-count" class="cart-count">0</span>
+</a>
 
-      <div class="mob-icons" id="menu-icons">
-        <i class='bx bx-menu' id="menu-toggle"></i>
-      </div>
-
-      <div class="mob-icons">
-        <i id="search-icon" class="bx bx-search"></i>
-        <input type="text" id="search-input" class="search-input" placeholder="Search..." />
-      </div>
-          
-      <a href="cart.html" class="cart-icon">
-            <i class="fas fa-shopping-cart"></i>
-            <span id="cart-count">0</span>
-          </a>
-    </nav>
+</nav>

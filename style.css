@@ -581,8 +581,8 @@ footer {
   position: absolute;
   top: -8px;
   right: -12px;
-  background: red;
-  color: white;
+  background: rgb(178, 47, 230);
+  color: rgb(28, 61, 206);
   font-size: 12px;
   border-radius: 50%;
   padding: 2px 6px;
@@ -643,7 +643,7 @@ footer {
 
 .remove {
   background: red;
-  color: white;
+  color: rgb(255, 255, 255);
   border: none;
   padding: 6px 12px;
   cursor: pointer;

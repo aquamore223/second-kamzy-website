@@ -1,39 +1,20 @@
-<!-- Example structure for all your HTML pages (e.g., tops.html, jeans.html, etc.) -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>tops-kamzy wardrobe</title>
+  <title>Tops – Kamzy Wardrobe</title>
   <link rel="icon" href="img/logo.jpg" type="image/x-icon">
   <link rel="stylesheet" href="style.css" />
-  <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <link href='https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-   <!-- Firebase SDK (Non-Module Global Import) -->
- <!--<script type="module">
-  import { db } from './firebase-config.js';
-
-import { collection, addDoc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
-
-addDoc(collection(db, "test"), {
-  message: " page connected!",
-  timestamp: new Date()
-})
-.then(() => console.log("✅page Firebase connected"))
-.catch(err => console.error("❌ Firebase error:", err));
-
-</script> -->
-
-
-
 </head>
-<body data-category="tops">
-    <header>  </header>
 
-  <!-- Main content for each page -->
+<body data-category="tops">
+  <header></header>
+
   <main>
-    <section class="hero" id="topspg" >
-      <h1> kamzy <span> wardrobe </span></h1>
+    <section class="hero" id="topspg">
+      <h1>kamzy <span>wardrobe</span></h1>
       <p>Your one-stop destination for the latest fashion trends.</p>
       <p>Discover unique styles and shop your favorite looks.</p>
     </section>
@@ -41,55 +22,17 @@ addDoc(collection(db, "test"), {
     <section class="tops" id="tops-section">
       <h2>Tops</h2>
       <div class="product-grid" id="tops-all">
-        <div class="product-item" id="tops">
-          <a href="">
-          <img src="img/top1.jpg" alt="Top 1">
-          <h3>Stylish Top</h3>
-          <p>$29.99</p>
-          </a>
-          <button>Add to Cart</button>
-        </div>
-        <div class="product-item">
-          <a href="">
-          <img src="img/top2.jpg" alt="Top 2">
-          <h3>Casual Top</h3>
-          <p>$24.99</p>
-          </a>
-          <button>Add to Cart</button>
-        </div>
-        <div class="product-item">
-          <a href="">
-          <img src="img/top3.jpg" alt="Top 3">
-          <h3>Formal Top</h3>
-          <p>$34.99</p>
-          </a>
-          <button>Add to Cart</button>
-        </div>
-        <div class="product-item">
-          <a href="">
-          <img src="img/top4.jpg" alt="Top 4">
-          <h3>Trendy Top</h3>
-          <p>$39.99</p>
-          </a>
-          <button>Add to Cart</button>
-        <!-- Add more products as needed -->
+ 
+
       </div>
-
     </section>
-
-
-
-
-
-
   </main>
 
-  <!-- Placeholder for Footer -->
   <div id="footer-placeholder"></div>
+  <footer></footer>
 
-   <footer>  </footer>
+  <!-- Scripts -->
   <script src="script.js" defer></script>
   <script type="module" src="category-page.js"></script>
-
 </body>
 </html>

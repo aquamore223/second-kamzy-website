@@ -10,6 +10,7 @@ import {
 // Confirm script loaded
 console.log("📦 category-page.js loaded");
 
+// Load products when DOM is ready
 document.addEventListener("DOMContentLoaded", async () => {
   const category = document.body.dataset.category;
   const container = document.getElementById(`${category}-all`);
@@ -30,23 +31,66 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     snapshot.forEach((doc) => {
       const data = doc.data();
+      const id = doc.id;
 
-      const card = document.createElement("div");  // ✅ FIX: define 'card' here
+      const card = document.createElement("div");
       card.classList.add("product-item");
       card.innerHTML = `
         <img src="${data.imageUrl}" alt="${data.name}" />
         <h4>${data.name}</h4>
-        <p>$${data.price}</p>
-        <button>Add to Cart</button>
+        <p>₦${parseFloat(data.price).toFixed(2)}</p>
+        <button class="add-to-cart-btn" data-id="${id}" data-name="${data.name}" data-price="${data.price}" data-image="${data.imageUrl}">Add to Cart</button>
       `;
 
       container.appendChild(card);
     });
 
     if (snapshot.empty) {
-      console.log("ℹ️ No products found for", category);
+      container.innerHTML = "<p>No products found in this category.</p>";
     }
   } catch (err) {
     console.error("❌ Error loading products:", err);
   }
+
+  // Add to Cart handlers
+  document.addEventListener("click", function (e) {
+    if (e.target.classList.contains("add-to-cart-btn")) {
+      const btn = e.target;
+      const id = btn.dataset.id;
+      const name = btn.dataset.name;
+      const price = parseFloat(btn.dataset.price);
+      const image = btn.dataset.image;
+
+      addToCart({ id, name, price, image });
+    }
+  });
+
+  updateCartCount();
 });
+
+// Add item to localStorage cart
+function addToCart(product) {
+  let cart = JSON.parse(localStorage.getItem("kamzyCart")) || [];
+
+  const existing = cart.find(item => item.id === product.id);
+  if (existing) {
+    existing.quantity += 1;
+  } else {
+    product.quantity = 1;
+    cart.push(product);
+  }
+
+  localStorage.setItem("kamzyCart", JSON.stringify(cart));
+  updateCartCount();
+}
+
+// Update cart icon count
+function updateCartCount() {
+  const cart = JSON.parse(localStorage.getItem("kamzyCart")) || [];
+  const count = cart.reduce((total, item) => total + item.quantity, 0);
+
+  const cartIcon = document.querySelector(".cart-icon span");
+  if (cartIcon) {
+    cartIcon.textContent = count;
+  }
+}

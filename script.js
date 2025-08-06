@@ -101,42 +101,112 @@ function setupNavAndSearch() {
       header.classList.toggle("stuck", window.scrollY > 10);
     });
   }
+
+  // ===== CART SYSTEM =====
+
+// Utility to get cart
+function getCart() {
+  return JSON.parse(localStorage.getItem("cart")) || [];
+}
+
+// Save cart to localStorage
+function saveCart(cart) {
+  localStorage.setItem("cart", JSON.stringify(cart));
+}
+
+// Update cart count in nav
+function updateCartCount() {
+  const cart = getCart();
+  const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const countElem = document.getElementById("cart-count");
+  if (countElem) countElem.textContent = count;
+}
+
+// Add to cart from product preview
+document.addEventListener("click", function (e) {
+  if (e.target.classList.contains("add-to-cart-btn")) {
+    const card = e.target.closest(".product-item");
+    const name = card.querySelector("h4").textContent;
+    const price = parseFloat(card.querySelector("p").textContent.replace("$", ""));
+    const imageUrl = card.querySelector("img").src;
+
+    const cart = getCart();
+    const existingItem = cart.find((item) => item.name === name);
+
+    if (existingItem) {
+      existingItem.quantity += 1;
+    } else {
+      cart.push({ name, price, imageUrl, quantity: 1 });
+    }
+
+    saveCart(cart);
+    updateCartCount();
+    alert("✅ Added to cart!");
+  }
+});
+
+// Render cart on cart.html
+if (document.getElementById("cart-items")) {
+  renderCart();
+}
+
+function renderCart() {
+  const cart = getCart();
+  const cartItemsContainer = document.getElementById("cart-items");
+  const cartTotal = document.getElementById("cart-total");
+  cartItemsContainer.innerHTML = "";
+
+  let total = 0;
+
+  cart.forEach((item, index) => {
+    total += item.price * item.quantity;
+
+    const itemElem = document.createElement("div");
+    itemElem.className = "cart-item";
+    itemElem.innerHTML = `
+      <img src="${item.imageUrl}" alt="${item.name}">
+      <div class="item-details">
+        <h4>${item.name}</h4>
+        <p>$${item.price}</p>
+        <div class="quantity-controls">
+          <button class="decrease" data-index="${index}">−</button>
+          <span>${item.quantity}</span>
+          <button class="increase" data-index="${index}">+</button>
+        </div>
+        <button class="remove" data-index="${index}">Remove</button>
+      </div>
+    `;
+    cartItemsContainer.appendChild(itemElem);
+  });
+
+  cartTotal.textContent = `$${total.toFixed(2)}`;
+  updateCartCount();
+}
+
+// Quantity and remove controls
+document.addEventListener("click", function (e) {
+  const cart = getCart();
+  const index = parseInt(e.target.dataset.index);
+
+  if (e.target.classList.contains("increase")) {
+    cart[index].quantity += 1;
+  } else if (e.target.classList.contains("decrease")) {
+    if (cart[index].quantity > 1) {
+      cart[index].quantity -= 1;
+    } else {
+      cart.splice(index, 1);
+    }
+  } else if (e.target.classList.contains("remove")) {
+    cart.splice(index, 1);
+  } else {
+    return;
+  }
+
+  saveCart(cart);
+  renderCart();
+});
+
 }
 
 
-document.addEventListener("DOMContentLoaded", () => {
-  const basePath = location.hostname === "aquamore223.github.io" ? "/second-kamzy-website/" : "";
 
-  const sections = [
-    { file: 'tops.html', sourceId: 'tops-section', targetId: 'tops-preview' },
-    { file: 'jeans.html', sourceId: 'jeans-section', targetId: 'jeans-preview' },
-    { file: 'joggers.html', sourceId: 'joggers-section', targetId: 'joggers-preview' },
-    { file: 'underwear.html', sourceId: 'underwear-section', targetId: 'underwear-preview' },
-    { file: 'accessories.html', sourceId: 'accessories-section', targetId: 'accessories-preview' },
-    { file: 'slides.html', sourceId: 'slides-section', targetId: 'slides-preview' },
-    { file: 'shoes.html', sourceId: 'shoes-section', targetId: 'shoes-preview' },
-  ];
-
-  sections.forEach(({ file, sourceId, targetId }) => {
-    fetch(basePath + file)
-      .then(res => res.text())
-      .then(html => {
-        const temp = document.createElement('div');
-        temp.innerHTML = html;
-        const section = temp.querySelector(`#${sourceId}`);
-
-        if (section) {
-          const limitedSection = section.cloneNode(true);
-          const limitedGrid = limitedSection.querySelector('.product-grid');
-
-          const productItems = limitedGrid.querySelectorAll('.product-item');
-          productItems.forEach((item, index) => {
-            if (index >= 4) item.remove();
-          });
-
-          document.getElementById(targetId).appendChild(limitedSection);
-        }
-      })
-      .catch(err => console.error(`Error loading ${file}:`, err));
-  });
-});

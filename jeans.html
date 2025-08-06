@@ -10,23 +10,10 @@
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <link href='https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
-  <script type="module">
-  import { db } from './firebase-config.js';
-import { collection, addDoc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
-
-addDoc(collection(db, "test"), {
-  message: " page connected!",
-  timestamp: new Date()
-})
-.then(() => console.log("✅ page Firebase connected"))
-.catch(err => console.error("❌ Firebase error:", err));
-
-</script>
-
 
 
 </head>
-<body>
+<body data-category="jeans">
    <header>  </header>
 
   <!-- Main content for each page -->
@@ -41,7 +28,7 @@ addDoc(collection(db, "test"), {
 
    <section id="jeans-section">
       <h2>Jeans</h2>
-      <div class="product-grid" >
+      <div class="product-grid" id="jeans-all">
         <div class="product-item" id="jeans">
           <a href="">
           <img src="img/jeans1.jpg" alt="Jeans 1">
@@ -83,5 +70,6 @@ addDoc(collection(db, "test"), {
 
   <!-- Script to load shared nav and footer -->
    <script src="script.js" defer></script>
+   <script type="module" src="category-page.js"></script>
 </body>
 </html>

@@ -1,15 +1,14 @@
 // 🔄 Load shared header and footer
 document.addEventListener("DOMContentLoaded", () => {
   // Load header
- fetch("nav.html")
-  .then(res => res.text())
-  .then(data => {
-    document.querySelector("header").innerHTML = data;
-    setupNavFunctionality();      // Menu toggle, etc.
-    setupSearchToggle();         // ✅ Attach search icon toggle
-    highlightCurrentPage();
-    updateCartCount();
-  });
+  fetch("nav.html")
+    .then(res => res.text())
+    .then(data => {
+      document.querySelector("header").innerHTML = data;
+      setupNavFunctionality();
+      highlightCurrentPage();
+      updateCartCount();
+    });
 
   // Load footer
   fetch("footer.html")
@@ -18,12 +17,14 @@ document.addEventListener("DOMContentLoaded", () => {
       document.querySelector("footer").innerHTML = data;
     });
 
-  // If on cart.html, render the cart
+  // Render cart if on cart.html
   if (document.getElementById("cart-items")) {
     renderCart();
   }
-});
 
+  setupClearCart();
+  setupCheckout();
+});
 
 // 🔁 Setup nav menu & search toggle
 function setupNavFunctionality() {
@@ -31,41 +32,34 @@ function setupNavFunctionality() {
   const closeBtn = document.getElementById("close-btn");
   const menu = document.getElementById("menu");
   const searchIcon = document.getElementById("search-icon");
-  const searchInput = document.querySelector(".search-input");
-  const body = document.body;
+  const searchInput = document.getElementById("search-input");
+  const cartIcon = document.getElementById("cart-icon");
 
   if (menuToggle && closeBtn && menu) {
     menuToggle.addEventListener("click", () => {
       menu.classList.add("active");
-      body.classList.add("no-scroll");
+      document.body.style.overflow = "hidden"; // Disable scroll
     });
 
     closeBtn.addEventListener("click", () => {
       menu.classList.remove("active");
-      body.classList.remove("no-scroll");
+      document.body.style.overflow = ""; // Restore scroll
     });
   }
- if (searchIcon && searchInput) {
-    console.log("Search toggle setup");
+
+  if (searchIcon && searchInput) {
     searchIcon.addEventListener("click", () => {
-      searchInput.classList.toggle("active");
+      searchInput.classList.toggle("show");
       searchInput.focus();
     });
-  } else {
-    console.warn("Search elements not found");
   }
-    
+
+  if (cartIcon) {
+    cartIcon.addEventListener("click", () => {
+      window.location.href = "cart.html";
+    });
   }
-  window.addEventListener("resize", () => {
-  if (window.innerWidth >= 1200) {
-    const menu = document.getElementById("menu");
-    menu.classList.remove("active");
-    document.body.classList.remove("no-scroll");
-    }
-});
-
-
-
+}
 
 // 🔗 Highlight current page in nav
 function highlightCurrentPage() {
@@ -80,7 +74,7 @@ function highlightCurrentPage() {
   });
 }
 
-// 🛒 Add to Cart (usable globally)
+// 🛒 Add to Cart
 function addToCart(product) {
   let cart = JSON.parse(localStorage.getItem("kamzyCart")) || [];
 
@@ -96,43 +90,19 @@ function addToCart(product) {
 }
 window.addToCart = addToCart;
 
-// ✅ Update Cart Count
+// 🔢 Update Cart Count
 function updateCartCount() {
- const cart = JSON.parse(localStorage.getItem("kamzyCart")) || [];
+  const cart = JSON.parse(localStorage.getItem("kamzyCart")) || [];
   const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   const countBadge = document.getElementById("cart-count");
-
   if (countBadge) {
-    if (totalQuantity > 0) {
-      countBadge.style.display = "inline-block";
-      countBadge.textContent = totalQuantity;
-    } else {
-      countBadge.style.display = "none";
-      countBadge.textContent = "";
-    }
+    countBadge.textContent = totalQuantity > 0 ? totalQuantity : "";
+    countBadge.style.display = totalQuantity > 0 ? "inline-block" : "none";
   }
 }
 
-// ✅ Run on page load
-document.addEventListener("DOMContentLoaded", () => {
-  updateCartCount();
-});
-
-
-// 🗑️ Clear Cart
-document.addEventListener("DOMContentLoaded", () => {
-  const clearBtn = document.getElementById("clear-cart-btn");
-  if (clearBtn) {
-    clearBtn.addEventListener("click", () => {
-      localStorage.removeItem("kamzyCart");
-      renderCart();
-      updateCartCount();
-    });
-  }
-});
-
-// 🛍️ Render Cart Page Items
+// 🛍️ Render Cart Page
 function renderCart() {
   const cart = JSON.parse(localStorage.getItem("kamzyCart")) || [];
   const cartItems = document.getElementById("cart-items");
@@ -150,7 +120,7 @@ function renderCart() {
 
   let total = 0;
 
-  cart.forEach(item => {
+  cart.forEach((item, index) => {
     const itemTotal = item.price * item.quantity;
     total += itemTotal;
 
@@ -161,17 +131,41 @@ function renderCart() {
       <div class="item-info">
         <h4>${item.name}</h4>
         <p>₦${item.price.toFixed(2)} x ${item.quantity} = ₦${itemTotal.toFixed(2)}</p>
+        <button class="remove-btn" data-index="${index}">Remove</button>
       </div>
     `;
     cartItems.appendChild(div);
   });
 
   cartTotal.textContent = total.toFixed(2);
+
+  // Setup remove button listeners
+  document.querySelectorAll(".remove-btn").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      const index = e.target.getAttribute("data-index");
+      cart.splice(index, 1);
+      localStorage.setItem("kamzyCart", JSON.stringify(cart));
+      renderCart();
+      updateCartCount();
+    });
+  });
 }
 window.renderCart = renderCart;
 
-// ✅ Fake Checkout
-document.addEventListener("DOMContentLoaded", () => {
+// 🗑️ Clear Cart
+function setupClearCart() {
+  const clearBtn = document.getElementById("clear-cart-btn");
+  if (clearBtn) {
+    clearBtn.addEventListener("click", () => {
+      localStorage.removeItem("kamzyCart");
+      renderCart();
+      updateCartCount();
+    });
+  }
+}
+
+// ✅ Checkout
+function setupCheckout() {
   const checkoutBtn = document.getElementById("checkout-btn");
   if (checkoutBtn) {
     checkoutBtn.addEventListener("click", () => {
@@ -181,4 +175,4 @@ document.addEventListener("DOMContentLoaded", () => {
       updateCartCount();
     });
   }
-});
+}

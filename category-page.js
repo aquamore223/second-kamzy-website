@@ -10,7 +10,7 @@ import {
 // Confirm script loaded
 console.log("📦 category-page.js loaded");
 
-// Load products when DOM is ready
+// Wait for DOM ready
 document.addEventListener("DOMContentLoaded", async () => {
   const category = document.body.dataset.category;
   const container = document.getElementById(`${category}-all`);
@@ -29,6 +29,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const snapshot = await getDocs(q);
 
+    if (snapshot.empty) {
+      container.innerHTML = "<p>No products found in this category.</p>";
+      return;
+    }
+
     snapshot.forEach((doc) => {
       const data = doc.data();
       const id = doc.id;
@@ -39,35 +44,38 @@ document.addEventListener("DOMContentLoaded", async () => {
         <img src="${data.imageUrl}" alt="${data.name}" />
         <h4>${data.name}</h4>
         <p>₦${parseFloat(data.price).toFixed(2)}</p>
-        <button class="add-to-cart-btn" data-id="${id}" data-name="${data.name}" data-price="${data.price}" data-image="${data.imageUrl}">Add to Cart</button>
+        <button class="add-to-cart-btn"
+          data-id="${id}"
+          data-name="${data.name}"
+          data-price="${data.price}"
+          data-image="${data.imageUrl}">
+          Add to Cart
+        </button>
       `;
 
       container.appendChild(card);
     });
 
-    if (snapshot.empty) {
-      container.innerHTML = "<p>No products found in this category.</p>";
-    }
   } catch (err) {
     console.error("❌ Error loading products:", err);
   }
-
-  // Add to Cart handlers
-  document.addEventListener("click", function (e) {
-    if (e.target.classList.contains("add-to-cart-btn")) {
-      const btn = e.target;
-      const id = btn.dataset.id;
-      const name = btn.dataset.name;
-      const price = parseFloat(btn.dataset.price);
-      const image = btn.dataset.image;
-
-      addToCart({ id, name, price, image });
-      
-    }
-  });
 });
 
-// Add item to localStorage cart
+// ✅ Global click handler for dynamically loaded Add to Cart buttons
+document.addEventListener("click", function (e) {
+  if (e.target.classList.contains("add-to-cart-btn")) {
+    const btn = e.target;
+    const id = btn.dataset.id;
+    const name = btn.dataset.name;
+    const price = parseFloat(btn.dataset.price);
+    const image = btn.dataset.image;
+
+    const product = { id, name, price, image };
+    addToCart(product);
+  }
+});
+
+// ✅ Add item to localStorage cart
 function addToCart(product) {
   let cart = JSON.parse(localStorage.getItem("kamzyCart")) || [];
 
@@ -83,7 +91,7 @@ function addToCart(product) {
   updateCartCount();
 }
 
-// Update cart icon count
+// ✅ Update cart icon count
 function updateCartCount() {
   const cart = JSON.parse(localStorage.getItem("kamzyCart")) || [];
   const count = cart.reduce((total, item) => total + item.quantity, 0);
@@ -94,3 +102,5 @@ function updateCartCount() {
   }
 }
 
+// ✅ Call on load to show correct count
+document.addEventListener("DOMContentLoaded", updateCartCount);

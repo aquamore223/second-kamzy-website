@@ -1,25 +1,29 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shopping Cart - Kamzy Wardrobe</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Cart</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header></header>
-
+  <!-- Main Cart Section -->
   <main>
-    <h1>Your Shopping Cart</h1>
-    <div class="cart-container" id="cart-items"></div>
-    <p>Total: <span id="total-price">₦0.00</span></p>
-    <span class="cart-count">0</span>
-    <button id="clear-cart"">Clear Cart</button>
+    <section id="cartSection">
+      <!-- Cart items will be dynamically injected here -->
+    </section>
+
+    <!-- Total & Clear -->
+    <section id="cartSummary" style="text-align: center; margin-top: 20px;">
+      <h3>Total: ₦<span id="cartTotal">0.00</span></h3>
+      <button id="clearCartBtn">Clear Cart</button>
+    </section>
   </main>
 
+  <!-- Footer -->
   <footer></footer>
 
-  <script src="script.js" defer></script>
-  <script src="cart.js" defer></script>
+  <script src="script.js"></script>
+  <script src="cart.js"></script>
 </body>
 </html>

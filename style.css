@@ -148,6 +148,15 @@ header.stuck {
   padding: 10px 1rem;
 }
 
+.search-box {
+  display: none;
+}
+
+.search-box.active {
+  display: block;
+}
+
+
 #menu-toggle {
   display: block;
 }

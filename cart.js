@@ -1,66 +1,60 @@
+// cart.js
 
-import { updateCartCount } from "./cart-utils.js";
+// ✅ Update the Cart Icon Count
+export function updateCartCount() {
+  const cart = JSON.parse(localStorage.getItem("kamzyCart")) || [];
+  const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
 
-document.addEventListener("DOMContentLoaded", () => {
-  const cartContainer = document.querySelector(".cart-container");
-  const clearCartBtn = document.getElementById("clear-cart");
-  const totalPriceElem = document.getElementById("total-price");
-  const cartCountElem = document.querySelector(".cart-count");
+  const countBadge = document.getElementById("cart-count");
 
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-  function renderCart() {
-    cartContainer.innerHTML = "";
-
-    if (cart.length === 0) {
-      cartContainer.innerHTML = "<p>Your cart is empty.</p>";
-      totalPriceElem.textContent = "₦0.00";
-      if (cartCountElem) cartCountElem.textContent = "0";
-      return;
+  if (countBadge) {
+    if (totalQuantity > 0) {
+      countBadge.style.display = "inline-block";
+      countBadge.textContent = totalQuantity;
+    } else {
+      countBadge.style.display = "none";
+      countBadge.textContent = "";
     }
+  }
+}
 
-    cart.forEach((item) => {
-      const cartItem = document.createElement("div");
-      cartItem.classList.add("cart-item");
+// ✅ Add to Cart
+export function addToCart(product) {
+  const cart = JSON.parse(localStorage.getItem("kamzyCart")) || [];
+  const existingItem = cart.find((item) => item.id === product.id);
 
-      cartItem.innerHTML = `
-        <img src="${item.imageUrl}" alt="${item.name}" class="cart-img" />
-        <div class="cart-info">
-          <h4>${item.name}</h4>
-          <p>₦${parseFloat(item.price).toFixed(2)}</p>
-          <p>Quantity: ${item.quantity}</p>
-        </div>
-      `;
+  if (existingItem) {
+    existingItem.quantity += 1;
+  } else {
+    product.quantity = 1;
+    cart.push(product);
+  }
 
-      cartContainer.appendChild(cartItem);
-    });
+  localStorage.setItem("kamzyCart", JSON.stringify(cart));
+  updateCartCount();
+}
 
-    updateTotalPrice();
+// ✅ Remove from Cart
+export function removeFromCart(productId) {
+  let cart = JSON.parse(localStorage.getItem("kamzyCart")) || [];
+  cart = cart.filter((item) => item.id !== productId);
+  localStorage.setItem("kamzyCart", JSON.stringify(cart));
+  updateCartCount();
+}
+
+// ✅ Change Quantity (Used in cart page)
+export function changeQuantity(productId, amount) {
+  const cart = JSON.parse(localStorage.getItem("kamzyCart")) || [];
+
+  const item = cart.find((i) => i.id === productId);
+  if (!item) return;
+
+  item.quantity += amount;
+  if (item.quantity <= 0) {
+    // remove if 0
+    removeFromCart(productId);
+  } else {
+    localStorage.setItem("kamzyCart", JSON.stringify(cart));
     updateCartCount();
   }
-
-  function updateTotalPrice() {
-    const total = cart.reduce(
-      (sum, item) => sum + item.quantity * parseFloat(item.price),
-      0
-    );
-    totalPriceElem.textContent = `₦${total.toFixed(2)}`;
-  }
-
-  function updateCartCount() {
-    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-    if (cartCountElem) cartCountElem.textContent = totalItems;
-  }
-
-  // ✅ FIX: Clear cart properly
-  clearCartBtn?.addEventListener("click", () => {
-    localStorage.removeItem("cart");
-   cart = [];
-    renderCart();
-    updateGlobalCartCount();  // <- this ensures other pages are synced
-
-  });
-
-  // Initial load
-  renderCart();
-});
+}

@@ -62,10 +62,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       const image = btn.dataset.image;
 
       addToCart({ id, name, price, image });
+      
     }
   });
-
-  updateCartCount();
 });
 
 // Add item to localStorage cart
@@ -94,3 +93,4 @@ function updateCartCount() {
     cartIcon.textContent = count;
   }
 }
+

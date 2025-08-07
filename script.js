@@ -1,14 +1,15 @@
 // 🔄 Load shared header and footer
 document.addEventListener("DOMContentLoaded", () => {
   // Load header
-  fetch("nav.html")
-    .then(res => res.text())
-    .then(data => {
-      document.querySelector("header").innerHTML = data;
-      setupNavFunctionality();
-      highlightCurrentPage();
-      updateCartCount(); // Ensure cart count updates after nav is loaded
-    });
+ fetch("nav.html")
+  .then(res => res.text())
+  .then(data => {
+    document.querySelector("header").innerHTML = data;
+    setupNavFunctionality();      // Menu toggle, etc.
+    setupSearchToggle();         // ✅ Attach search icon toggle
+    highlightCurrentPage();
+    updateCartCount();
+  });
 
   // Load footer
   fetch("footer.html")
@@ -23,26 +24,48 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+
 // 🔁 Setup nav menu & search toggle
 function setupNavFunctionality() {
   const menuToggle = document.getElementById("menu-toggle");
   const closeBtn = document.getElementById("close-btn");
   const menu = document.getElementById("menu");
   const searchIcon = document.getElementById("search-icon");
-  const searchInput = document.getElementById("search-input");
+  const searchInput = document.querySelector(".search-input");
+  const body = document.body;
 
   if (menuToggle && closeBtn && menu) {
-    menuToggle.addEventListener("click", () => menu.classList.add("active"));
-    closeBtn.addEventListener("click", () => menu.classList.remove("active"));
-  }
+    menuToggle.addEventListener("click", () => {
+      menu.classList.add("active");
+      body.classList.add("no-scroll");
+    });
 
-  if (searchIcon && searchInput) {
-    searchIcon.addEventListener("click", () => {
-      searchInput.classList.toggle("show");
-      searchInput.focus();
+    closeBtn.addEventListener("click", () => {
+      menu.classList.remove("active");
+      body.classList.remove("no-scroll");
     });
   }
-}
+ if (searchIcon && searchInput) {
+    console.log("Search toggle setup");
+    searchIcon.addEventListener("click", () => {
+      searchInput.classList.toggle("active");
+      searchInput.focus();
+    });
+  } else {
+    console.warn("Search elements not found");
+  }
+    
+  }
+  window.addEventListener("resize", () => {
+  if (window.innerWidth >= 1200) {
+    const menu = document.getElementById("menu");
+    menu.classList.remove("active");
+    document.body.classList.remove("no-scroll");
+    }
+});
+
+
+
 
 // 🔗 Highlight current page in nav
 function highlightCurrentPage() {
@@ -73,17 +96,29 @@ function addToCart(product) {
 }
 window.addToCart = addToCart;
 
-// 🔢 Update Cart Count in Navbar
+// ✅ Update Cart Count
 function updateCartCount() {
-  const cart = JSON.parse(localStorage.getItem("kamzyCart")) || [];
-  const total = cart.reduce((sum, item) => sum + item.quantity, 0);
-  const countBadge = document.getElementById("cart-count"); // 🟥 red badge
+ const cart = JSON.parse(localStorage.getItem("kamzyCart")) || [];
+  const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+  const countBadge = document.getElementById("cart-count");
 
   if (countBadge) {
-    countBadge.textContent = total;
-    countBadge.style.display = total > 0 ? "inline-block" : "none"; // hide when empty
+    if (totalQuantity > 0) {
+      countBadge.style.display = "inline-block";
+      countBadge.textContent = totalQuantity;
+    } else {
+      countBadge.style.display = "none";
+      countBadge.textContent = "";
+    }
   }
 }
+
+// ✅ Run on page load
+document.addEventListener("DOMContentLoaded", () => {
+  updateCartCount();
+});
+
 
 // 🗑️ Clear Cart
 document.addEventListener("DOMContentLoaded", () => {

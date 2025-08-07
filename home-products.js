@@ -10,7 +10,7 @@ import {
 
 // ✅ 1. Update Cart Count Icon
 function updateCartCount() {
-  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const cart = JSON.parse(localStorage.getItem("kamzyCart")) || [];
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
   const cartCountElem = document.querySelector(".cart-count");
   if (cartCountElem) {
@@ -20,7 +20,7 @@ function updateCartCount() {
 
 // ✅ 2. Add to Cart Function
 function addToCart(product) {
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  let cart = JSON.parse(localStorage.getItem("kamzyCart")) || [];
 
   const existingItem = cart.find((item) => item.id === product.id);
   if (existingItem) {
@@ -30,7 +30,7 @@ function addToCart(product) {
     cart.push(product);
   }
 
-  localStorage.setItem("cart", JSON.stringify(cart));
+  localStorage.setItem("kamzyCart", JSON.stringify(cart));
   updateCartCount();
 }
 

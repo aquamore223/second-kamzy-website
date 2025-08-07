@@ -50,15 +50,16 @@ header.stuck {
   left: 0;
   height: 100vh;
   width: 100vw;
-  background:url('img/navpic.jpeg');
-  background-size: 100% 100%; 
+  background: url('img/navpic.jpeg');
+  background-size: 100% 100%;
   background-color: #000;
   display: none;
   flex-direction: column;
   padding: 1rem 2rem;
-  z-index: 1500;
+  z-index: 9999; /* ← Increase this */
   align-items: center;
 }
+
 
 .nav-links-container::before {
   content: "";
@@ -80,13 +81,13 @@ header.stuck {
   justify-content: space-between;
   align-items: center;
 }
-
 #close-btn {
-  display: none;
   font-size: 2.5rem;
   color: white;
   cursor: pointer;
+  display: block;
 }
+
 
 .nav-links {
   list-style: none;
@@ -121,29 +122,26 @@ header.stuck {
   color: white;
   cursor: pointer;
 }
+#search-icon:hover {
+  color: red;
+  cursor: pointer;
+}
 .search-input {
-  display: none;
+   display: none;
   position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  padding: 0.75rem 1rem;
-  font-size: 1rem;
-  background: white;
-  color: black;
-  border: none;
+  right: 60px;
+  top: 50%;
+  transform: translateY(-50%);
   z-index: 1000;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-  opacity: 0;
-  pointer-events: none;
-  max-height: 0;
-  opacity: 0;
-  transition: max-height 0.4s ease, opacity 0.3s ease;
-  overflow: hidden;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 6px 10px;
+  border-radius: 4px;
+  width: 200px;
 }
 
 .search-input.active {
-  display: block;
+  display: inline-block;
   opacity: 1;
   pointer-events: auto;
   max-height: 50px;
@@ -175,6 +173,12 @@ header.stuck {
     align-items: center;
     padding: 0;
   }
+
+  .nav-links-container.active {
+  display: flex;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
 
   .nav-links {
     display: flex;
@@ -237,27 +241,7 @@ header.stuck {
     width: 80px;
     height: 80px;
   }
-
-  
-  .search-input {
-  display: none;
-  position: absolute;
-  top: 100%; /* appear directly below nav */
-  left: 0;
-  width: 100%;
-  padding: 0.75rem 1rem;
-  font-size: 1rem;
-  background: white;
-  color: black;
-  border: none;
-  z-index: 1000;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-}
-
-.search-input.active {
-  display: block !important;
-}
-
+ 
 }
 @media screen and (min-width: 600px) and (max-width: 1023px) {
   .nav-links-container {
@@ -273,10 +257,7 @@ header.stuck {
     font-size: 1.1rem;
 
   }
-
-  .search-input.active {
-  display: block !important;
-  }
+ 
 }
 
 @media screen and (max-width: 768px) {
@@ -518,7 +499,7 @@ footer {
   margin-top: 2rem;
   color: #fff;
   position: relative;
-  z-index: 1000;
+  z-index: 10;
   font-size: 0.9rem;
   display: flex;
   flex-direction: column;
@@ -586,6 +567,7 @@ footer {
   font-size: 12px;
   border-radius: 50%;
   padding: 2px 6px;
+  display: none; /* 🔴 hidden by default */
 }
 
 /* ===== Product Card Button ===== */

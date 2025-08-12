@@ -130,7 +130,7 @@ function renderCart() {
       <img src="${item.imageUrl}" alt="${item.name}">
       <div class="item-info">
         <h4>${item.name}</h4>
-        <p>₦${item.price.toFixed(2)} x ${item.quantity} = ₦${itemTotal.toFixed(2)}</p>
+        <p>₦${item.price.toLocaleString()} x ${item.quantity} = ₦${itemTotal.toLocaleString()}</p>
         <button class="remove-btn" data-index="${index}">Remove</button>
       </div>
     `;
@@ -176,3 +176,23 @@ function setupCheckout() {
     });
   }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".add-to-cart").forEach(button => {
+    button.addEventListener("click", () => {
+      const product = {
+        name: button.dataset.name,
+        price: parseFloat(button.dataset.price),
+        imageUrl: button.dataset.image
+      };
+
+      addToCart(product); // Call function from cart.js
+
+      // Optional: give instant feedback
+      button.textContent = "✅ Added!";
+      setTimeout(() => {
+        button.textContent = "Add to Cart";
+      }, 1500);
+    });
+  });
+});

@@ -77,17 +77,20 @@ document.addEventListener("DOMContentLoaded", async () => {
       const data = doc.data();
       const id = doc.id;
 
+      // Ensure absolute image URL so it works from any page
+      const imageUrl = new URL(data.imageUrl, window.location.origin).href;
+
       const card = document.createElement("div");
       card.classList.add("product-item");
       card.innerHTML = `
-        <img src="${data.imageUrl}" alt="${data.name}" />
+        <img src="${imageUrl}" alt="${data.name}" />
         <h4>${data.name}</h4>
         <p>₦${parseFloat(data.price).toLocaleString()}</p>
         <button class="add-to-cart-btn"
           data-id="${id}"
           data-name="${data.name}"
           data-price="${data.price}"
-          data-image="${data.imageUrl}">
+          data-image="${imageUrl}">
           Add to Cart
         </button>
       `;
@@ -108,7 +111,7 @@ document.addEventListener("click", function (e) {
       id: btn.dataset.id,
       name: btn.dataset.name,
       price: parseFloat(btn.dataset.price),
-      image: btn.dataset.image
+      imageUrl: btn.dataset.image // 🔹 unified with cart.js
     };
 
     addToCart(product);

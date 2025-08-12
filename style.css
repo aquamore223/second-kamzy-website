@@ -652,3 +652,26 @@ footer {
   cursor: pointer;
   margin-top: 20px;
 }
+
+#cartsection{
+  color: #17171a;
+}
+.cart-page{
+  background-color: #afa2a2b4;
+}
+
+.cart-back{
+ 
+  align-items: center;
+
+}
+#cart-back{
+  display: block;
+   text-align: center;
+  text-decoration:none;
+  color: red;
+  padding: 5px;
+  font-weight: bolder;
+  left:30px;
+  background-color: #000;
+}

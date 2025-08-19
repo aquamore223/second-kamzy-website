@@ -669,9 +669,14 @@ footer {
   display: block;
    text-align: center;
   text-decoration:none;
-  color: red;
+  color:black;
+  font-size: 1.2rem;
   padding: 5px;
   font-weight: bolder;
   left:30px;
-  background-color: #000;
+  
+}
+#cart-back:hover {
+  color: #e75b5b;
+  
 }

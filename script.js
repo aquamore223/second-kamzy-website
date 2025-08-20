@@ -1,4 +1,4 @@
- // 🔄 Load shared header, footer, and cart
+// 🔄 Load shared header, footer, and cart
 document.addEventListener("DOMContentLoaded", () => {
   // Load header
   fetch("nav.html")
@@ -8,8 +8,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // ✅ Get current page name
       let currentPage = window.location.pathname.split("/").pop();
-      if (currentPage === "" || currentPage === "/") {
-        currentPage = "index.html"; // default homepage
+      if (!currentPage || currentPage === "/" || currentPage === "index") {
+        currentPage = "index.html"; // normalize homepage
       }
 
       // ✅ Highlight active link
@@ -49,6 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (typeof setupClearCart === "function") setupClearCart();
   if (typeof setupCheckout === "function") setupCheckout();
 });
+
 
 
 // 🔁 Setup nav menu & search toggle

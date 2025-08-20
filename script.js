@@ -1,14 +1,37 @@
-// 🔄 Load shared header and footer
+ // 🔄 Load shared header, footer, and cart
 document.addEventListener("DOMContentLoaded", () => {
   // Load header
   fetch("nav.html")
     .then(res => res.text())
     .then(data => {
       document.querySelector("header").innerHTML = data;
-      setupNavFunctionality();
-      highlightCurrentPage();
-      updateCartCount();
-    });
+
+      // ✅ Get current page name
+      let currentPage = window.location.pathname.split("/").pop();
+      if (currentPage === "" || currentPage === "/") {
+        currentPage = "index.html"; // default homepage
+      }
+
+      // ✅ Highlight active link
+      document.querySelectorAll("nav a").forEach(link => {
+        let linkHref = link.getAttribute("href");
+
+        // Handle cases like "/index.html"
+        if (linkHref.startsWith("/")) {
+          linkHref = linkHref.substring(1);
+        }
+
+        if (linkHref === currentPage) {
+          link.classList.add("active");
+        }
+      });
+
+      // Re-init nav functionality if needed
+      if (typeof setupNavFunctionality === "function") {
+        setupNavFunctionality();
+      }
+    })
+    .catch(err => console.error("❌ Error loading nav:", err));
 
   // Load footer
   fetch("footer.html")
@@ -22,9 +45,11 @@ document.addEventListener("DOMContentLoaded", () => {
     renderCart();
   }
 
-  setupClearCart();
-  setupCheckout();
+  // Cart functions (apply only if defined)
+  if (typeof setupClearCart === "function") setupClearCart();
+  if (typeof setupCheckout === "function") setupCheckout();
 });
+
 
 // 🔁 Setup nav menu & search toggle
 function setupNavFunctionality() {
@@ -196,24 +221,4 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
-function highlightActiveLink() {
-  const currentPage = window.location.pathname.split("/").pop(); // e.g. tops.html
-  const navLinks = document.querySelectorAll("nav a");
-
-  navLinks.forEach(link => {
-    // Remove active class from all
-    link.classList.remove("active");
-
-    // Add to the matching page
-    if (link.getAttribute("href") === currentPage) {
-      link.classList.add("active");
-    }
-  });
-}
-
-// Run after nav is injected
-document.addEventListener("DOMContentLoaded", () => {
-  setTimeout(() => {
-    highlightActiveLink();
-  }, 300); // delay so nav loads first
-});
+ 

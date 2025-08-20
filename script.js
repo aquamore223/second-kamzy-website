@@ -8,20 +8,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // ✅ Get current page name
       let currentPage = window.location.pathname.split("/").pop();
-      if (!currentPage || currentPage === "/" || currentPage === "index") {
-        currentPage = "index.html"; // normalize homepage
+      if (currentPage === "" || currentPage === "/") {
+        currentPage = "index.html"; // default homepage
       }
 
       // ✅ Highlight active link
       document.querySelectorAll("nav a").forEach(link => {
         let linkHref = link.getAttribute("href");
 
-        // Handle cases like "/index.html"
+        // Remove leading slash for comparison
         if (linkHref.startsWith("/")) {
           linkHref = linkHref.substring(1);
         }
 
-        if (linkHref === currentPage) {
+        // Special case: home link
+        if (
+          (currentPage === "index.html" && linkHref === "index.html") ||
+          (window.location.pathname === "/" && linkHref === "index.html")
+        ) {
+          link.classList.add("active");
+        } else if (linkHref === currentPage) {
           link.classList.add("active");
         }
       });
@@ -49,6 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (typeof setupClearCart === "function") setupClearCart();
   if (typeof setupCheckout === "function") setupCheckout();
 });
+
 
 
 

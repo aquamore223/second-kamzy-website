@@ -196,3 +196,24 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+function highlightActiveLink() {
+  const currentPage = window.location.pathname.split("/").pop(); // e.g. tops.html
+  const navLinks = document.querySelectorAll("nav a");
+
+  navLinks.forEach(link => {
+    // Remove active class from all
+    link.classList.remove("active");
+
+    // Add to the matching page
+    if (link.getAttribute("href") === currentPage) {
+      link.classList.add("active");
+    }
+  });
+}
+
+// Run after nav is injected
+document.addEventListener("DOMContentLoaded", () => {
+  setTimeout(() => {
+    highlightActiveLink();
+  }, 300); // delay so nav loads first
+});
